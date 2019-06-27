@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Testing Page</title>
+        <link rel="stylesheet" href="css/myStyles.css">
+    </head>
+    <body>
+
+        <div id="simpleModal" class="modal">
+            <div class="modal-content">
+                <a class="closeBtn" href="index.html"><b>&times;</b></a>
+                <h2>Results:</h2>
+                <table id="modalTable">
+                    <tr>
+                        <th style="width: 40%">Label</th>
+                        <th style="width: 30%">Date</th>
+                        <th style="width: 30%; text-align: center">Result</th>
+                    </tr>
+                    <tr>
+                        <td>Gross WPM:</td>
+                        <td>Date placeholder</td>
+                        <td style="text-align: center">result placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Net WPM:</td>
+                        <td>Date placeholder</td>
+                        <td style="text-align: center">result placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Errors:</td>
+                        <td>Date placeholder</td>
+                        <td style="text-align: center">result placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Accuracy:</td>
+                        <td>Date placeholder</td>
+                        <td style="text-align: center">result placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Total Characters:</td>
+                        <td>Date placeholder</td>
+                        <td style="text-align: center">result placeholder</td>
+                    </tr>
+                </table>
+                <button type="button" id="printBtn" onclick="printResults();">Print Results</button>
+            </div>
+        </div>
+
+        <div id="display-stats">
+            <ul id="stats-list">
+                <ul class="stats">
+                    <li id="stat-name"><u>Accuracy</u></li>
+                    <li class="intVal">0</li>
+                </ul>
+                <ul class="stats">
+                    <li id="stat-name"><u>Errors</u></li>
+                    <li class="intVal">0</li>
+                </ul>
+                <ul class="stats">
+                    <li id="stat-name"><u>Time remaining</u></li>
+                    <li class="intVal">0</li>
+                </ul>
+                <ul class="stats">
+                    <li id="stat-name"><u>net-WPM</u></li>
+                    <li class="intVal">0</li>
+                </ul>
+                <ul class="stats">
+                    <li id="stat-name"><u>gross-WPM</u></li>
+                    <li class="intVal">0</li>
+                </ul>
+            </ul>
+
+        </div>
+
+        <div id="test-area">
+            <span id="green" style="color: green"></span>
+            <span id="original"></span>
+        </div>
+
+        <script src="js/Settings.js"></script>
+        <script src="js/Library.js"></script>
+        <script src="js/Timer.js"></script>
+        <script src="js/Stats.js"></script>
+        <script src="js/Typer.js"></script>
+        <script src="js/ModalWindow.js"></script>
+        <script src="js/Main.js"></script>
+
+        <script type="text/javascript">
+
+        function randomNum() { return Math.floor((Math.random() * 5) + 0); }
+
+        var el_original = document.getElementById("original");
+        var el_green = document.getElementById("green");
+
+        var backSpace = 8;
+
+        var stringURL = window.location.href;
+        var params = new URLSearchParams(document.location.search.substring(1));
+
+        let settings = new Settings(params.get("lang"), params.get("limit"));
+        let library = new Library(settings.language, this.randomNum());
+        let timer = new Timer(settings.timeLimit);
+        let stats = new Stats(parseInt(settings.timeLimit));
+        let typer = new Typer();
+        let modalWindow = new ModalWindow();
+        let main = new Main();
+
+        window.onload = function()
+        {
+            states = 1;
+            main.stateMachine();
+        }
+
+        function printResults() { window.print(); }
+
+        document.onkeypress = function(event)
+        {
+            typer._typedLetter = (String.fromCharCode(event.charCode));
+
+            if(timer.isRunning == false)
+            {
+                main.runTimer();
+                timer.isRunning = true;
+                states = 2;
+            }
+            main.stateMachine();
+        }
+
+        document.onkeydown = function(event)
+        {
+            if(event.keyCode == backSpace) { main.backStep(); }
+            // disable enter key ( it was causeing irratic behavoir)
+            if(event.keyCode == 13) { return false; }
+        }
+
+        </script>
+
+    </body>
+</html>

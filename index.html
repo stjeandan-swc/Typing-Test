@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/myStyles.css">
+        <title>Typing Test</title>
+    </head>
+    <body>
+        <header>
+            <h1 id="intro2">Test</h1>
+            <h1 id="intro1">Typing</h1>
+        </header>
+        <a class="container" href="javascript: onclick()">
+            <form id="options" action="testpage.html" method="get">
+                <!-- Make a selection Time: 30s, 1min, or 2min-->
+                <h3>Select a time limit:</h3>
+                <input type="radio" name="limit" value="30" checked="checked">30 Seconds
+                <input type="radio" name="limit" value="60">1 Minute
+                <h3>Select your perferred language:</h3>
+                <!-- Make selection language: French, English-->
+                <input type="radio" name="lang" value="en" checked="checked">English
+                <input type="radio" name="lang" value="fr">French
+                <br>
+            </form>
+        </a>
+        <footer>
+            <p><b>Site designed by: Daniel St Jean. dan.stj@outlook.com</b></p>
+        </footer>
+        <script type="text/javascript">
+
+            function onclick()
+            {
+                document.forms["options"].submit();
+            }
+
+        </script>
+    </body>
+</html>
